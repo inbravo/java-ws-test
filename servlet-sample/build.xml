@@ -1,0 +1,82 @@
+<project name="SS" default="deploy-tomcat">
+
+	<property environment="env" />
+	<property name="tomcat.home" location="D:/opensource/Tomcat_7_training" />
+	<property name="war.dir" location="D:/work/work-documents/impetus/java-web-introduction/ServletSample/target" />
+	<property name="war.file.name" value="ss" />
+
+
+	<target name="deploy-tomcat">
+		<echo message="==========================================================" />
+		<echo message="Going for war deploy at Tomcat" />
+		<echo message="==========================================================" />
+		<antcall target="validate-tomcat" />
+		<copy file="${war.dir}/${war.file.name}.war" todir="${tomcat.home}/webapps" />
+	</target>
+
+	<target name="undeploy-tomcat">
+		<echo message="==========================================================" />
+		<echo message="Going for war undeploy at Tomcat" />
+		<echo message="==========================================================" />
+		<antcall target="validate-tomcat" />
+		<delete file="${tomcat.home}/webapps/${war.file.name}.war" />
+		<delete dir="${tomcat.home}/webapps/${war.file.name}" />
+	</target>
+
+	<target name="validate-tomcat">
+		<echo message="==========================================================" />
+		<echo message="Going for validation of Tomcat" />
+		<echo message="==========================================================" />
+		<fail unless="tomcat.home" message="You should set the CATALINA_HOME, if you want to deploy into tomcat" />
+	</target>
+
+	<target name="tomcat-start" depends="deploy-tomcat">
+		<echo message="==========================================================" />
+		<echo message="Going for Tomcat:start" />
+		<echo message="==========================================================" />
+		<java classname="org.apache.catalina.startup.Bootstrap" failonerror="true" fork="true">
+			<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+			<jvmarg value="-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager" />
+			<jvmarg value="-Djava.util.logging.config.file=${tomcat.home}/conf/logging.properties" />
+			<jvmarg value="-Dcatalina.home=${tomcat.home}" />
+			<jvmarg value="-Dcatalina.base=${tomcat.home}" />
+			<jvmarg value="-Djava.io.tmpdir=${tomcat.home}/temp" />
+			<jvmarg value="-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true" />
+			<arg line="start" />
+		</java>
+	</target>
+
+	<target name="tomcat-stop">
+		<echo message="==========================================================" />
+		<echo message="Going for Tomcat:stop" />
+		<echo message="==========================================================" />
+		<java classname="org.apache.catalina.startup.Bootstrap" failonerror="true" fork="true">
+			<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+			<jvmarg value="-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager" />
+			<jvmarg value="-Djava.util.logging.config.file=${tomcat.home}/conf/logging.properties" />
+			<jvmarg value="-Dcatalina.home=${tomcat.home}" />
+			<jvmarg value="-Dcatalina.base=${tomcat.home}" />
+			<jvmarg value="-Djava.io.tmpdir=${tomcat.home}/temp" />
+			<jvmarg value="-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true" />
+			<arg line="stop" />
+		</java>
+	</target>
+
+	<target name="tomcat-start-debug" depends="deploy-tomcat">
+		<echo message="==========================================================" />
+		<echo message="Going for Tomcat:start:debugmode" />
+		<echo message="==========================================================" />
+		<java jar="${tomcat.home}/bin/bootstrap.jar" fork="true">
+			<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+			<jvmarg value="-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager" />
+			<jvmarg value="-Djava.util.logging.config.file=${tomcat.home}/conf/logging.properties" />
+			<jvmarg value="-Dcatalina.home=${tomcat.home}" />
+			<jvmarg value="-Dcatalina.base=${tomcat.home}" />
+			<jvmarg value="-Djava.io.tmpdir=${tomcat.home}/temp" />
+			<jvmarg value="-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true" />
+			<jvmarg value="-Xdebug" />
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n" />
+			<arg line="start" />
+		</java>
+	</target>
+</project>
