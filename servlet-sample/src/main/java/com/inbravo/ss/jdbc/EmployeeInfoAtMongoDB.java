@@ -24,6 +24,9 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 
 	private final static Logger logger = LoggerFactory.getLogger(EmployeeInfoAtMongoDB.class);
 
+	/* Name of service class */
+	public static final String SERVICE_NAME = EmployeeInfoAtMongoDB.class.getName();
+
 	private static final int port = 27017;
 	private static final String host = "localhost";
 	private static Mongo mongo = null;
@@ -31,6 +34,11 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 
 	public EmployeeInfoAtMongoDB() throws Exception {
 
+		this.initDB();
+	}
+
+	@Override
+	public final void init() throws Exception {
 		this.initDB();
 	}
 

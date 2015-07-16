@@ -1,7 +1,6 @@
 package com.inbravo.ss.servlet;
 
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +16,8 @@ import org.slf4j.LoggerFactory;
 import com.inbravo.ss.dao.EmployeeDAO;
 import com.inbravo.ss.dto.EmployeeDTO;
 import com.inbravo.ss.execption.EmployeeException;
-import com.inbravo.ss.jdbc.EmployeeInfoAtDB;
 import com.inbravo.ss.jdbc.EmployeeInfoAtMongoDB;
+import com.inbravo.ss.service.EmployeeInfo;
 
 /**
  * 
@@ -32,7 +31,7 @@ public final class EmployeeServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	private EmployeeInfoAtDB employeeInfoAtDB;
+	private EmployeeInfo employeeInfo;
 
 	@Override
 	public void init() throws ServletException {
@@ -41,7 +40,7 @@ public final class EmployeeServlet extends HttpServlet {
 		try {
 
 			/* Initialize your data base connection utility object */
-			employeeInfoAtDB = new EmployeeInfoAtMongoDB();
+			employeeInfo = new EmployeeInfoAtMongoDB();
 		} catch (final Exception e) {
 
 			/* Send error in logs */
@@ -82,7 +81,13 @@ public final class EmployeeServlet extends HttpServlet {
 		logger.debug("--Inside doPost");
 
 		/* Call proces request */
-		this.processRequest(request, response);
+		try {
+			this.processRequest(request, response);
+		} catch (final Exception e) {
+
+			/* Send to error page */
+			this.showServerError(request, response, e);
+		}
 	}
 
 	@Override
@@ -98,7 +103,7 @@ public final class EmployeeServlet extends HttpServlet {
 			final EmployeeDAO dao = new EmployeeDAO(dto);
 
 			/* Add new employee in DB */
-			employeeInfoAtDB.update(dao);
+			employeeInfo.update(dao);
 		} catch (final EmployeeException e) {
 
 			/* Throw user error */
@@ -137,7 +142,7 @@ public final class EmployeeServlet extends HttpServlet {
 
 		try {
 			/* Delete the employee from DB */
-			employeeInfoAtDB.delete(employeeId);
+			employeeInfo.delete(employeeId);
 		} catch (final EmployeeException e) {
 
 			/* Throw user error */
@@ -169,11 +174,9 @@ public final class EmployeeServlet extends HttpServlet {
 	 * 
 	 * @param request
 	 * @param response
-	 * @throws IOException
-	 * @throws ServletException
+	 * @throws Exception
 	 */
-	private final void processRequest(final HttpServletRequest request, final HttpServletResponse response) throws ServletException,
-			IOException {
+	private final void processRequest(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
 		if (request.getParameter("operation") != null && "delete".equalsIgnoreCase(request.getParameter("operation"))) {
 
@@ -195,7 +198,7 @@ public final class EmployeeServlet extends HttpServlet {
 				final EmployeeDAO dao = new EmployeeDAO(dto);
 
 				/* Add new employee in DB */
-				employeeInfoAtDB.create(dao);
+				employeeInfo.create(dao);
 
 				/* Check if created employee information found in session */
 				if (request.getSession().getAttribute("emp_created") != null) {
@@ -221,6 +224,11 @@ public final class EmployeeServlet extends HttpServlet {
 				/* Send to error page */
 				this.showServerError(request, response, e);
 			}
+		}
+		if (request.getParameter("operation") != null && "serviceSwitch".equalsIgnoreCase(request.getParameter("operation"))) {
+
+			/* Call Employee Update */
+			this.serviceSwitch(request, response);
 		} else {
 
 			/* Show user error */
@@ -244,7 +252,7 @@ public final class EmployeeServlet extends HttpServlet {
 		if (employeeId != null && "".equals(employeeId)) {
 
 			/* Get employee information from DB */
-			final EmployeeDAO dao = employeeInfoAtDB.read(Integer.parseInt(employeeId));
+			final EmployeeDAO dao = employeeInfo.read(Integer.parseInt(employeeId));
 
 			/* Create new DTO and add in list */
 			dtos.add(new EmployeeDTO(dao));
@@ -252,7 +260,7 @@ public final class EmployeeServlet extends HttpServlet {
 		} else {
 
 			/* Get employee information from DB */
-			final List<EmployeeDAO> daos = employeeInfoAtDB.read();
+			final List<EmployeeDAO> daos = employeeInfo.read();
 
 			/* Iterate over DAO and populate DTO */
 			for (final EmployeeDAO dao : daos) {
@@ -298,6 +306,28 @@ public final class EmployeeServlet extends HttpServlet {
 			/* Forward the request */
 			request.getRequestDispatcher("/jsp/common/error.jsp").forward(request, response);
 		}
+	}
+
+	/**
+	 * 
+	 * @param employeeInfo
+	 * @throws Exception
+	 */
+	final public void serviceSwitch(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+
+		logger.info("--Inside serviceSwitch, backhand service is changed to : ", employeeInfo.getClass().getSimpleName());
+
+		/* Get service type from request */
+		final String serviceType = request.getParameter("serviceType");
+
+		/* Create respective service on the basis of service type */
+		if (serviceType != null && EmployeeInfoAtMongoDB.SERVICE_NAME.equalsIgnoreCase(serviceType)) {
+
+			/* Initialize your data base connection utility object */
+			this.employeeInfo = new EmployeeInfoAtMongoDB();
+		}
+		/* Create REST type service */
+		/* Create SOAP type service */
 	}
 
 	@Override
