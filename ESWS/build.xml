@@ -1,0 +1,32 @@
+<project name="ESWS" default="deploy-tomcat">
+
+	<property environment="env" />
+	<property name="tomcat.home" location="D:/opensource/Tomcat_7_training" />
+	<property name="war.dir" location="D:/personal/mygithub/trainings/ESWS/target" />
+	<property name="war.file.name" value="esws" />
+
+
+	<target name="deploy-tomcat">
+		<echo message="==========================================================" />
+		<echo message="Going for war deploy at Tomcat" />
+		<echo message="==========================================================" />
+		<antcall target="validate-tomcat" />
+		<copy file="${war.dir}/${war.file.name}.war" todir="${tomcat.home}/webapps" />
+	</target>
+
+	<target name="undeploy-tomcat">
+		<echo message="==========================================================" />
+		<echo message="Going for war undeploy at Tomcat" />
+		<echo message="==========================================================" />
+		<antcall target="validate-tomcat" />
+		<delete file="${tomcat.home}/webapps/${war.file.name}.war" />
+		<delete dir="${tomcat.home}/webapps/${war.file.name}" />
+	</target>
+
+	<target name="validate-tomcat">
+		<echo message="==========================================================" />
+		<echo message="Going for validation of Tomcat" />
+		<echo message="==========================================================" />
+		<fail unless="tomcat.home" message="You should set the CATALINA_HOME, if you want to deploy into tomcat" />
+	</target>
+</project>
