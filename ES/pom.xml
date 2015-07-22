@@ -3,10 +3,10 @@
 	<!-- Proejct properties -->
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.inbravo</groupId>
-	<artifactId>SS</artifactId>
+	<artifactId>ES</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.1beta</version>
-	<name>ServletSample Maven Webapp</name>
+	<name>ServletSample Webapp</name>
 	<url>http://maven.apache.org</url>
 
 	<!-- Library properties -->
@@ -56,7 +56,7 @@
 
 	<!-- Webapp name -->
 	<build>
-		<finalName>ss</finalName>
+		<finalName>es</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
