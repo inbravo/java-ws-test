@@ -18,6 +18,8 @@ import com.inbravo.ss.dto.EmployeeDTO;
 import com.inbravo.ss.execption.EmployeeException;
 import com.inbravo.ss.jdbc.EmployeeInfoAtMongoDB;
 import com.inbravo.ss.service.EmployeeInfo;
+import com.inbravo.ss.wsclients.EmployeeInfoAtERWS;
+import com.inbravo.ss.wsclients.EmployeeInfoAtESWS;
 
 /**
  * 
@@ -227,7 +229,7 @@ public final class EmployeeServlet extends HttpServlet {
 		}
 		if (request.getParameter("operation") != null && "serviceSwitch".equalsIgnoreCase(request.getParameter("operation"))) {
 
-			/* Call Employee Update */
+			/* Call service switch */
 			this.serviceSwitch(request, response);
 		} else {
 
@@ -326,8 +328,22 @@ public final class EmployeeServlet extends HttpServlet {
 			/* Initialize your data base connection utility object */
 			this.employeeInfo = new EmployeeInfoAtMongoDB();
 		}
-		/* Create REST type service */
-		/* Create SOAP type service */
+		/* Check for SOAP type service */
+		else if (serviceType != null && EmployeeInfoAtESWS.SERVICE_NAME.equalsIgnoreCase(serviceType)) {
+
+			/* Initialize your ESWS client */
+			this.employeeInfo = new EmployeeInfoAtESWS();
+		}
+		/* Check for REST type service */
+		else if (serviceType != null && EmployeeInfoAtERWS.SERVICE_NAME.equalsIgnoreCase(serviceType)) {
+
+			/* Initialize your ESWS client */
+			this.employeeInfo = new EmployeeInfoAtERWS();
+		} else {
+
+			/* Throw user error */
+			this.showValidationError(request, "Following service '" + serviceType + "' is not available");
+		}
 	}
 
 	@Override
