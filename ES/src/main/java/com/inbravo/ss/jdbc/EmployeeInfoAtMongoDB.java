@@ -25,7 +25,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 	private final static Logger logger = LoggerFactory.getLogger(EmployeeInfoAtMongoDB.class);
 
 	/* Name of service class */
-	public static final String SERVICE_NAME = EmployeeInfoAtMongoDB.class.getName();
+	public static final String SERVICE_NAME = "EmployeeInfoAtMongoDB";
 
 	private static final int port = 27017;
 	private static final String host = "localhost";

@@ -2,6 +2,8 @@ package com.inbravo.ss.wsclients;
 
 import java.util.List;
 
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +20,7 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	private final static Logger logger = LoggerFactory.getLogger(EmployeeInfoAtESWS.class);
 
 	/* Name of service class */
-	public static final String SERVICE_NAME = EmployeeInfoAtESWS.class.getName();
+	public static final String SERVICE_NAME = "EmployeeInfoAtESWS";
 
 	private static final int port = 27017;
 	private static final String host = "localhost";
@@ -68,7 +70,11 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	public final List<EmployeeDAO> read() throws Exception {
 
 		if (initializationStatus) {
+			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+			Client client = dcf.createClient("http://localhost:8080/esws/services/employeeService?wsdl");
 
+			Object[] res = client.invoke("read");
+			System.out.println("Echo response: " + res[0]);
 		} else {
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtESWS is not initialized");
@@ -100,12 +106,9 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 
 	public static void main(String[] args) throws Exception {
 
-		final EmployeeDAO dao = new EmployeeDAO(2, "Amit", "9873139660", "amit.dixit@impetus.co.in", 10000f, "Engineer");
-
 		final EmployeeInfoAtESWS eamdb = new EmployeeInfoAtESWS();
 
-		eamdb.create(dao);
-		System.out.println(eamdb.read(2));
+		System.out.println(eamdb.read());
 		// eamdb.delete(2);
 		// eamdb.read(2);
 	}

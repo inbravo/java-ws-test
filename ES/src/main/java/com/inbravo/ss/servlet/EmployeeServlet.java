@@ -317,8 +317,6 @@ public final class EmployeeServlet extends HttpServlet {
 	 */
 	final public void serviceSwitch(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
-		logger.info("--Inside serviceSwitch, backhand service is changed to : ", employeeInfo.getClass().getSimpleName());
-
 		/* Get service type from request */
 		final String serviceType = request.getParameter("serviceType");
 
@@ -344,6 +342,11 @@ public final class EmployeeServlet extends HttpServlet {
 			/* Throw user error */
 			this.showValidationError(request, "Following service '" + serviceType + "' is not available");
 		}
+
+		logger.info("--Inside serviceSwitch, backhand service is changed to : " + serviceType);
+		
+		/* Forward the request to service switch JSP */
+		request.getRequestDispatcher("/jsp/service/ServiceSwitch.jsp").forward(request, response);
 	}
 
 	@Override

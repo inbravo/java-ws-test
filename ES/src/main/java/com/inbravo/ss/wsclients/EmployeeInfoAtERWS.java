@@ -18,7 +18,7 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	private final static Logger logger = LoggerFactory.getLogger(EmployeeInfoAtERWS.class);
 
 	/* Name of service class */
-	public static final String SERVICE_NAME = EmployeeInfoAtERWS.class.getName();
+	public static final String SERVICE_NAME = "EmployeeInfoAtERWS";
 
 	private static final int port = 27017;
 	private static final String host = "localhost";

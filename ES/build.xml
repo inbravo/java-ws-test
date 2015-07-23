@@ -2,7 +2,7 @@
 
 	<property environment="env" />
 	<property name="tomcat.home" location="D:/opensource/Tomcat_7_training" />
-	<property name="war.dir" location="D:/personal/mygithub/trainings/servlet-sample/target" />
+	<property name="war.dir" location="D:/personal/mygithub/trainings/ES/target" />
 	<property name="war.file.name" value="es" />
 
 
