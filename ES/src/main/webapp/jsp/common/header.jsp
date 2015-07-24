@@ -16,9 +16,8 @@
 		<div id="mystyle" style="border: none;">
 			<h1>Servlet/JSP/JDBC/SOAP/REST tutorial</h1>
 			<p>
-				<%=new Date()%></br> </br> <a href="<%=localContext%>/jsp/employee/AddEmployee.jsp">Add New Employee</a> &NegativeThickSpace; | <a
-					href="<%=localContext%>/employeeService.ser"
-				>View Employee</a>
+				<%=new Date()%></br> </br> 
+				<a href="<%=localContext%>/jsp/employee/AddEmployee.jsp">Add New Employee</a> &NegativeThickSpace; | <a href="<%=localContext%>/employeeService.ser">View Employee</a>&NegativeThickSpace; | <a href="<%=localContext%>/jsp/service/ServiceSwitch.jsp">Service Switch</a>
 			</p>
 		</div>
 	</center>
