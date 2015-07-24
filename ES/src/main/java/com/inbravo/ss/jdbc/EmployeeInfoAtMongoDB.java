@@ -1,13 +1,13 @@
 package com.inbravo.ss.jdbc;
 
 import java.net.UnknownHostException;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.inbravo.dto.StandardDTO;
 import com.inbravo.esws.service.Employee;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -34,7 +34,6 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 	private static boolean initializationStatus;
 
 	public EmployeeInfoAtMongoDB() throws Exception {
-
 		this.initDB();
 	}
 
@@ -60,7 +59,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 	}
 
 	@Override
-	public void create(final Employee dao) throws Exception {
+	public void create(final StandardDTO dto) throws Exception {
 
 		if (initializationStatus) {
 
@@ -72,10 +71,14 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 				/* Start the request */
 				mongo.getDB("test").requestStart();
 
+				/* Typecast */
+				final Employee employee = (Employee) dto;
+
 				/* Create new DB object at Mongo DB */
 				final BasicDBObject employeeObj = new BasicDBObject("obj_name", "Employee").append("version", "1.0")
-						.append("id", dao.getEmpId()).append("name", dao.getEmpName()).append("designation", dao.getDesignation())
-						.append("email", dao.getEmail()).append("phone", dao.getPhone()).append("salary", dao.getSalary());
+						.append("id", employee.getEmpId()).append("name", employee.getEmpName())
+						.append("designation", employee.getDesignation()).append("email", employee.getEmail())
+						.append("phone", employee.getPhone()).append("salary", employee.getSalary());
 
 				/* Insert an employee */
 				coll.insert(employeeObj);
@@ -148,7 +151,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 	}
 
 	@Override
-	public final List<Employee> readAll() throws Exception {
+	public final List<StandardDTO> readAll() throws Exception {
 
 		if (initializationStatus) {
 
@@ -158,7 +161,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 			final DBCollection coll = mongo.getDB("test").getCollection("Employee");
 
 			/* Create new employee list */
-			final List<Employee> employeeList = new ArrayList<Employee>();
+			final List<StandardDTO> employeeList = new ArrayList<StandardDTO>();
 
 			try {
 
@@ -239,7 +242,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 	}
 
 	@Override
-	final public void update(final Employee dao) throws Exception {
+	final public void update(final StandardDTO dto) throws Exception {
 
 		if (initializationStatus) {
 
@@ -251,14 +254,18 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 				/* Start the request */
 				mongo.getDB("test").requestStart();
 
+				/* Typecast */
+				final Employee employee = (Employee) dto;
+
 				/* Refer existing DB object at Mongo DB */
 				final BasicDBObject existingObject = new BasicDBObject("obj_name", "Employee").append("version", "1.0").append("id",
-						dao.getEmpId());
+						employee.getEmpId());
 
 				/* Create new DB object at Mongo DB */
 				final BasicDBObject newObject = new BasicDBObject("obj_name", "Employee").append("version", "1.0")
-						.append("id", dao.getEmpId()).append("name", dao.getEmpName()).append("designation", dao.getDesignation())
-						.append("email", dao.getEmail()).append("phone", dao.getPhone()).append("salary", dao.getSalary());
+						.append("id", employee.getEmpId()).append("name", employee.getEmpName())
+						.append("designation", employee.getDesignation()).append("email", employee.getEmail())
+						.append("phone", employee.getPhone()).append("salary", employee.getSalary());
 
 				/* Update the employee */
 				coll.update(existingObject, newObject);

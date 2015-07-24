@@ -1,7 +1,6 @@
 package com.inbravo.esws.service;
 
 import javax.servlet.http.HttpServletRequest;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inbravo.esws.exception.EmployeeException;

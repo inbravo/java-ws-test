@@ -14,7 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compile.java.version>1.7</compile.java.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<cxf.version>2.5.0</cxf.version>
+		<cxf.version>3.0.5</cxf.version>
 	</properties>
 
 	<!-- Proejct dependencies -->
@@ -89,11 +89,40 @@
 			<version>${cxf.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-rs-client</artifactId>
+			<version>3.0.0-milestone1</version>
+		</dependency>
+		<!-- for JSON provider -->
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-rs-extension-providers</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<!-- for extension providers -->
+		<dependency>
+			<groupId>org.codehaus.jettison</groupId>
+			<artifactId>jettison</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
 			<groupId>esws</groupId>
 			<artifactId>esws-dto</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/esws-dto.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>erws</groupId>
+			<artifactId>erws-dto</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/erws-dto.jar</systemPath>
 		</dependency>
 	</dependencies>
 

@@ -1,11 +1,20 @@
 package com.inbravo.ss.wsclients;
 
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+
+import org.apache.cxf.jaxrs.client.WebClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.esws.service.Employee;
+import com.inbravo.dto.StandardDTO;
+import com.inbravo.erws.service.Employees;
+import com.inbravo.erws.service.Employee;
 import com.inbravo.ss.service.EmployeeInfo;
 
 /**
@@ -20,8 +29,22 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	/* Name of service class */
 	public static final String SERVICE_NAME = "EmployeeInfoAtERWS";
 
-	private static final int port = 27017;
+	private static final int port = 8080;
 	private static final String host = "localhost";
+
+	/* Create JAXBContext for the employee object */
+	private JAXBContext employeeContext;
+
+	/* Create marshaler */
+	private Unmarshaller employeeUnmarshaller;
+
+	/* Create JAXBContext for the employees object */
+	private JAXBContext employeesContext;
+
+	/* Create marshaler */
+	private Unmarshaller employeesUnmarshaller;
+
+	private WebClient client;
 
 	private static boolean initializationStatus;
 
@@ -37,12 +60,21 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 
 	public final void initESWSClient() throws Exception {
 
+		/* Create web client */
+		client = WebClient.create("http://" + host + ":" + port + "/erws/services/employeeService");
+
+		employeeContext = JAXBContext.newInstance(Employee.class);
+		employeeUnmarshaller = employeeContext.createUnmarshaller();
+
+		employeesContext = JAXBContext.newInstance(Employees.class);
+		employeesUnmarshaller = employeesContext.createUnmarshaller();
+
 		/* Initialization is completed */
 		initializationStatus = true;
 	}
 
 	@Override
-	public void create(final Employee dao) throws Exception {
+	public void create(final StandardDTO dto) throws Exception {
 
 		if (initializationStatus) {
 
@@ -53,27 +85,62 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	}
 
 	@Override
-	public final Employee read(final int employeeId) throws Exception {
+	public final StandardDTO read(final int employeeId) throws Exception {
+
+		logger.debug("read >>>>");
 
 		if (initializationStatus) {
 
+			/* Set response content settings */
+			client.path("/read/" + employeeId).type("text/xml");
+
+			/* Get response */
+			final Response response = client.get();
+
+			/* Convert to employee */
+			final Employee employee = (Employee) employeeUnmarshaller.unmarshal((InputStream) response.getEntity());
+
+			return employee;
 		} else {
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtERWS client is not initialized");
 		}
-		return null;
 	}
 
 	@Override
-	public final List<Employee> readAll() throws Exception {
+	public final List<StandardDTO> readAll() throws Exception {
+
+		logger.debug("readAll >>>>");
 
 		if (initializationStatus) {
 
+			/* Set response content settings */
+			client.path("/readall/").type("text/xml");
+
+			/* Get response */
+			final Response response = client.get();
+
+			logger.debug("readAll : response status : " + response.getStatus());
+
+			/* Convert to employee */
+			final Employees employees = (Employees) employeesUnmarshaller.unmarshal((InputStream) response.getEntity());
+
+			/* Create new Employee DTO list */
+			final List<StandardDTO> employeeList = new ArrayList<StandardDTO>();
+
+			/* Convert to standard dto */
+			for (final StandardDTO dto : employees.employees) {
+
+				employeeList.add(dto);
+			}
+
+			return employeeList;
+
 		} else {
+
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtERWS client is not initialized");
 		}
-		return null;
 	}
 
 	@Override
@@ -81,6 +148,12 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 
 		if (initializationStatus) {
 
+			/* Set response content settings */
+			client.path("/delete/" + employeeId).type("text/xml");
+
+			/* Call delete */
+			client.delete();
+
 		} else {
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtERWS client is not initialized");
@@ -88,13 +161,25 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	}
 
 	@Override
-	final public void update(final Employee dao) throws Exception {
+	final public void update(final StandardDTO dto) throws Exception {
 
 		if (initializationStatus) {
+
+			/* Set response content settings */
+			client.path("/update").type("text/xml");
+
+			/* Call update */
+			client.put((Employee) dto);
 
 		} else {
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtERWS client is not initialized");
 		}
+	}
+
+	public static void main(String[] args) throws Exception {
+
+		EmployeeInfoAtERWS info = new EmployeeInfoAtERWS();
+		System.out.println(info.read(1));
 	}
 }

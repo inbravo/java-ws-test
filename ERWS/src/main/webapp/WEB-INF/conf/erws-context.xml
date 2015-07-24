@@ -17,7 +17,7 @@
 	<bean id="employeeService" class="com.inbravo.erws.service.EmployeeRESTService" />
 
 	<!--Defining an end point for the REST Request -->
-	<jaxrs:server id="erws" address="/">
+	<jaxrs:server id="erws" address="/employeeService">
 		<jaxrs:serviceBeans>
 			<ref bean="employeeService" />
 		</jaxrs:serviceBeans>

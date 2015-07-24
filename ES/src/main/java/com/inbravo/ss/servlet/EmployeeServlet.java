@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.inbravo.dto.StandardDTO;
 import com.inbravo.esws.service.Employee;
 import com.inbravo.esws.exception.EmployeeException;
 import com.inbravo.ss.jdbc.EmployeeInfoAtMongoDB;
@@ -66,7 +67,7 @@ public final class EmployeeServlet extends HttpServlet {
 			final long startTime = System.currentTimeMillis();
 
 			/* Create new Employee DTO list */
-			final List<Employee> employeeList = this.getEmployees(employeeId);
+			final List<StandardDTO> employeeList = this.getEmployees(employeeId);
 
 			/* End time */
 			final long endTime = System.currentTimeMillis();
@@ -264,16 +265,16 @@ public final class EmployeeServlet extends HttpServlet {
 	 * @throws NumberFormatException
 	 * @throws Exception
 	 */
-	private final List<Employee> getEmployees(final String employeeId) throws NumberFormatException, Exception {
+	private final List<StandardDTO> getEmployees(final String employeeId) throws NumberFormatException, Exception {
 
 		/* Create new Employee DTO list */
-		final List<Employee> employeeList = new ArrayList<Employee>();
+		final List<StandardDTO> employeeList = new ArrayList<StandardDTO>();
 
 		/* If there is no employee id in request */
 		if (employeeId != null && "".equals(employeeId)) {
 
 			/* Create new DTO and add in list */
-			employeeList.add(employeeInfo.read(Integer.parseInt(employeeId)));
+			employeeList.add((Employee) employeeInfo.read(Integer.parseInt(employeeId)));
 
 		} else {
 

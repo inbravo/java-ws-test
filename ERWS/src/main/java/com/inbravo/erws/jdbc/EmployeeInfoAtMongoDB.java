@@ -1,14 +1,13 @@
 package com.inbravo.erws.jdbc;
 
 import java.net.UnknownHostException;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.erws.dto.Employee;
+import com.inbravo.erws.service.Employee;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -23,7 +22,6 @@ import com.mongodb.MongoException;
  */
 public final class EmployeeInfoAtMongoDB
 {
-
 	private final static Logger logger = LoggerFactory.getLogger(EmployeeInfoAtMongoDB.class);
 
 	/* Name of service class */
@@ -65,7 +63,13 @@ public final class EmployeeInfoAtMongoDB
 		initializationStatus = true;
 	}
 
-	public void create(final Employee dao) throws Exception
+	/**
+	 * 
+	 * @param dao
+	 * @return
+	 * @throws Exception
+	 */
+	public final Employee create(final Employee dao) throws Exception
 	{
 
 		if (initializationStatus)
@@ -89,6 +93,8 @@ public final class EmployeeInfoAtMongoDB
 
 				logger.debug("New employee is created : [" + employeeObj + "]");
 
+				return new Employee(employeeObj);
+
 			} catch (final Exception ex)
 			{
 
@@ -107,6 +113,12 @@ public final class EmployeeInfoAtMongoDB
 		}
 	}
 
+	/**
+	 * 
+	 * @param employeeId
+	 * @return
+	 * @throws Exception
+	 */
 	public final Employee read(final int employeeId) throws Exception
 	{
 
@@ -163,7 +175,12 @@ public final class EmployeeInfoAtMongoDB
 		}
 	}
 
-	public final List<Employee> read() throws Exception
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public final List<Employee> readAll() throws Exception
 	{
 
 		if (initializationStatus)
@@ -221,6 +238,11 @@ public final class EmployeeInfoAtMongoDB
 		}
 	}
 
+	/**
+	 * 
+	 * @param employeeId
+	 * @throws Exception
+	 */
 	public final void delete(final int employeeId) throws Exception
 	{
 
@@ -265,7 +287,13 @@ public final class EmployeeInfoAtMongoDB
 		}
 	}
 
-	final public void update(final Employee dao) throws Exception
+	/**
+	 * 
+	 * @param employee
+	 * @return
+	 * @throws Exception
+	 */
+	final public Employee update(final Employee employee) throws Exception
 	{
 
 		if (initializationStatus)
@@ -281,11 +309,11 @@ public final class EmployeeInfoAtMongoDB
 				mongo.getDB("test").requestStart();
 
 				/* Refer existing DB object at Mongo DB */
-				final BasicDBObject existingObject = new BasicDBObject("obj_name", "Employee").append("version", "1.0").append("id", dao.getEmpId());
+				final BasicDBObject existingObject = new BasicDBObject("obj_name", "Employee").append("version", "1.0").append("id", employee.getEmpId());
 
 				/* Create new DB object at Mongo DB */
-				final BasicDBObject newObject = new BasicDBObject("obj_name", "Employee").append("version", "1.0").append("id", dao.getEmpId()).append("name", dao.getEmpName())
-						.append("designation", dao.getDesignation()).append("email", dao.getEmail()).append("phone", dao.getPhone()).append("salary", dao.getSalary());
+				final BasicDBObject newObject = new BasicDBObject("obj_name", "Employee").append("version", "1.0").append("id", employee.getEmpId()).append("name", employee.getEmpName())
+						.append("designation", employee.getDesignation()).append("email", employee.getEmail()).append("phone", employee.getPhone()).append("salary", employee.getSalary());
 
 				/* Update the employee */
 				coll.update(existingObject, newObject);
@@ -304,6 +332,7 @@ public final class EmployeeInfoAtMongoDB
 				mongo.getDB("test").requestDone();
 			}
 		}
+		return employee;
 	}
 
 	public static void main(String[] args) throws Exception

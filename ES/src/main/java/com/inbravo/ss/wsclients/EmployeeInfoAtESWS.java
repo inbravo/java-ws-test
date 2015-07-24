@@ -7,6 +7,7 @@ import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.inbravo.dto.StandardDTO;
 import com.inbravo.esws.service.Employee;
 import com.inbravo.ss.service.EmployeeInfo;
 
@@ -52,7 +53,7 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	}
 
 	@Override
-	public void create(final Employee employee) throws Exception {
+	public void create(final StandardDTO employee) throws Exception {
 
 		if (initializationStatus) {
 
@@ -85,7 +86,7 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	}
 
 	@Override
-	public final List<Employee> readAll() throws Exception {
+	public final List<StandardDTO> readAll() throws Exception {
 
 		if (initializationStatus) {
 
@@ -94,7 +95,7 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 
 			/* Get all employees from response */
 			@SuppressWarnings("unchecked")
-			final List<Employee> employees = (List<Employee>) res[0];
+			final List<StandardDTO> employees = (List<StandardDTO>) res[0];
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("readAll, employees count : " + employees);
@@ -123,7 +124,7 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	}
 
 	@Override
-	final public void update(final Employee employee) throws Exception {
+	final public void update(final StandardDTO employee) throws Exception {
 
 		if (initializationStatus) {
 
