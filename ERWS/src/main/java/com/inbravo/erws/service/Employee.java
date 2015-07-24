@@ -3,7 +3,7 @@ package com.inbravo.erws.service;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.inbravo.erws.exception.EmployeeException;
+import com.inbravo.erws.exception.ERWSException;
 import com.mongodb.DBObject;
 
 /**
@@ -58,42 +58,42 @@ public final class Employee
 			this.setEmpId(Integer.parseInt(request.getParameter("empId")));
 		} else
 		{
-			throw new EmployeeException("Employee id is not found");
+			throw new ERWSException("Employee id is not found");
 		}
 		if (request.getParameter("empName") != null)
 		{
 			this.setEmpName(request.getParameter("empName"));
 		} else
 		{
-			throw new EmployeeException("Employee name is not found");
+			throw new ERWSException("Employee name is not found");
 		}
 		if (request.getParameter("phone") != null)
 		{
 			this.setPhone(request.getParameter("phone"));
 		} else
 		{
-			throw new EmployeeException("Employee phone is not found");
+			throw new ERWSException("Employee phone is not found");
 		}
 		if (request.getParameter("email") != null)
 		{
 			this.setEmail(request.getParameter("email"));
 		} else
 		{
-			throw new EmployeeException("Employee email is not found");
+			throw new ERWSException("Employee email is not found");
 		}
 		if (request.getParameter("salary") != null)
 		{
 			this.setSalary(Float.parseFloat(request.getParameter("salary")));
 		} else
 		{
-			throw new EmployeeException("Employee salary is not found");
+			throw new ERWSException("Employee salary is not found");
 		}
 		if (request.getParameter("designation") != null)
 		{
 			this.setDesignation(request.getParameter("designation"));
 		} else
 		{
-			throw new EmployeeException("Employee designation is not found");
+			throw new ERWSException("Employee designation is not found");
 		}
 	}
 

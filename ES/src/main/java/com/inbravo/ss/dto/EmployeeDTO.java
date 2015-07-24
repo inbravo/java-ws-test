@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.inbravo.ss.exception.EmployeeException;
+import com.inbravo.ss.exception.ESException;
 import com.mongodb.DBObject;
 
 /**
@@ -33,32 +33,32 @@ public final class EmployeeDTO implements Serializable {
 		if (request.getParameter("empId") != null) {
 			this.setEmpId(Integer.parseInt(request.getParameter("empId")));
 		} else {
-			throw new EmployeeException("Employee id is not found");
+			throw new ESException("Employee id is not found");
 		}
 		if (request.getParameter("empName") != null) {
 			this.setEmpName(request.getParameter("empName"));
 		} else {
-			throw new EmployeeException("Employee name is not found");
+			throw new ESException("Employee name is not found");
 		}
 		if (request.getParameter("phone") != null) {
 			this.setPhone(request.getParameter("phone"));
 		} else {
-			throw new EmployeeException("Employee phone is not found");
+			throw new ESException("Employee phone is not found");
 		}
 		if (request.getParameter("email") != null) {
 			this.setEmail(request.getParameter("email"));
 		} else {
-			throw new EmployeeException("Employee email is not found");
+			throw new ESException("Employee email is not found");
 		}
 		if (request.getParameter("salary") != null) {
 			this.setSalary(Float.parseFloat(request.getParameter("salary")));
 		} else {
-			throw new EmployeeException("Employee salary is not found");
+			throw new ESException("Employee salary is not found");
 		}
 		if (request.getParameter("designation") != null) {
 			this.setDesignation(request.getParameter("designation"));
 		} else {
-			throw new EmployeeException("Employee designation is not found");
+			throw new ESException("Employee designation is not found");
 		}
 	}
 

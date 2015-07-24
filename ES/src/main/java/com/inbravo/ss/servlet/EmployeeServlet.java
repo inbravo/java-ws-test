@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.inbravo.ss.dto.EmployeeDTO;
-import com.inbravo.ss.exception.EmployeeException;
+import com.inbravo.ss.exception.ESException;
 import com.inbravo.ss.jdbc.EmployeeInfoAtMongoDB;
 import com.inbravo.ss.service.EmployeeInfo;
 import com.inbravo.ss.wsclients.EmployeeInfoAtERWS;
@@ -124,7 +124,7 @@ public final class EmployeeServlet extends HttpServlet {
 			final long endTime = System.currentTimeMillis();
 
 			logger.debug("--Inside doPut : time taken in transaction : " + (endTime - startTime) + " msec(s)");
-		} catch (final EmployeeException e) {
+		} catch (final ESException e) {
 
 			/* Throw user error */
 			this.showValidationError(request, e.getMessage());
@@ -171,7 +171,7 @@ public final class EmployeeServlet extends HttpServlet {
 			final long endTime = System.currentTimeMillis();
 
 			logger.debug("--Inside doDelete : time taken in transaction : " + (endTime - startTime) + " msec(s)");
-		} catch (final EmployeeException e) {
+		} catch (final ESException e) {
 
 			/* Throw user error */
 			this.showValidationError(request, e.getMessage());
@@ -236,7 +236,7 @@ public final class EmployeeServlet extends HttpServlet {
 
 				/* Forward the request to view employee page */
 				this.doGet(request, response);
-			} catch (final EmployeeException e) {
+			} catch (final ESException e) {
 
 				/* Throw user error */
 				this.showValidationError(request, e.getMessage());

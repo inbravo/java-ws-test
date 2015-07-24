@@ -7,7 +7,7 @@ import javax.jws.WebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.esws.exception.EmployeeException;
+import com.inbravo.esws.exception.ESWSException;
 import com.inbravo.esws.jdbc.EmployeeInfoAtMongoDB;
 
 @WebService(endpointInterface = "com.inbravo.esws.service.EmployeeService", serviceName = "employeeService")
@@ -34,7 +34,7 @@ public final class EmployeeSOAPService implements EmployeeService
 		} catch (final Exception e)
 		{
 			logger.error("Error in read operation", e);
-			throw new EmployeeException("Error in read operation", e);
+			throw new ESWSException("Error in read operation", e);
 		}
 	}
 
@@ -50,7 +50,7 @@ public final class EmployeeSOAPService implements EmployeeService
 		} catch (final Exception e)
 		{
 			logger.error("Error in read operation", e);
-			throw new EmployeeException("Error in read operation", e);
+			throw new ESWSException("Error in read operation", e);
 		}
 	}
 
@@ -66,7 +66,7 @@ public final class EmployeeSOAPService implements EmployeeService
 		} catch (final Exception e)
 		{
 			logger.error("Error in create operation", e);
-			throw new EmployeeException("Error in create operation", e);
+			throw new ESWSException("Error in create operation", e);
 		}
 	}
 
@@ -82,7 +82,7 @@ public final class EmployeeSOAPService implements EmployeeService
 		} catch (final Exception e)
 		{
 			logger.error("Error in update operation", e);
-			throw new EmployeeException("Error in update operation", e);
+			throw new ESWSException("Error in update operation", e);
 		}
 	}
 
@@ -98,7 +98,7 @@ public final class EmployeeSOAPService implements EmployeeService
 		} catch (final Exception e)
 		{
 			logger.error("Error in delete operation", e);
-			throw new EmployeeException("Error in delete operation", e);
+			throw new ESWSException("Error in delete operation", e);
 		}
 	}
 }
