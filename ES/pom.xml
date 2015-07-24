@@ -98,18 +98,6 @@
 			<artifactId>cxf-rt-rs-client</artifactId>
 			<version>3.0.0-milestone1</version>
 		</dependency>
-		<!-- for JSON provider -->
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-rs-extension-providers</artifactId>
-			<version>${cxf.version}</version>
-		</dependency>
-		<!-- for extension providers -->
-		<dependency>
-			<groupId>org.codehaus.jettison</groupId>
-			<artifactId>jettison</artifactId>
-			<version>1.2</version>
-		</dependency>
 		<dependency>
 			<groupId>esws</groupId>
 			<artifactId>esws-dto</artifactId>

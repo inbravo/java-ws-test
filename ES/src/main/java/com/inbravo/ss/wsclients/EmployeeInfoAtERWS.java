@@ -12,9 +12,9 @@ import org.apache.cxf.jaxrs.client.WebClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.dto.StandardDTO;
 import com.inbravo.erws.service.Employees;
 import com.inbravo.erws.service.Employee;
+import com.inbravo.ss.dto.EmployeeDTO;
 import com.inbravo.ss.service.EmployeeInfo;
 
 /**
@@ -74,7 +74,7 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	}
 
 	@Override
-	public void create(final StandardDTO dto) throws Exception {
+	public void create(final EmployeeDTO dto) throws Exception {
 
 		if (initializationStatus) {
 
@@ -85,7 +85,7 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	}
 
 	@Override
-	public final StandardDTO read(final int employeeId) throws Exception {
+	public final EmployeeDTO read(final int employeeId) throws Exception {
 
 		logger.debug("read >>>>");
 
@@ -100,7 +100,7 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 			/* Convert to employee */
 			final Employee employee = (Employee) employeeUnmarshaller.unmarshal((InputStream) response.getEntity());
 
-			return employee;
+			return new EmployeeDTO(employee);
 		} else {
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtERWS client is not initialized");
@@ -108,7 +108,7 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	}
 
 	@Override
-	public final List<StandardDTO> readAll() throws Exception {
+	public final List<EmployeeDTO> readAll() throws Exception {
 
 		logger.debug("readAll >>>>");
 
@@ -126,12 +126,12 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 			final Employees employees = (Employees) employeesUnmarshaller.unmarshal((InputStream) response.getEntity());
 
 			/* Create new Employee DTO list */
-			final List<StandardDTO> employeeList = new ArrayList<StandardDTO>();
+			final List<EmployeeDTO> employeeList = new ArrayList<EmployeeDTO>();
 
-			/* Convert to standard dto */
-			for (final StandardDTO dto : employees.employees) {
+			/* Convert to standard employee */
+			for (final Employee employee : employees.employees) {
 
-				employeeList.add(dto);
+				employeeList.add(new EmployeeDTO(employee));
 			}
 
 			return employeeList;
@@ -161,15 +161,19 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	}
 
 	@Override
-	final public void update(final StandardDTO dto) throws Exception {
+	final public void update(final EmployeeDTO employeeDTO) throws Exception {
 
 		if (initializationStatus) {
 
 			/* Set response content settings */
 			client.path("/update").type("text/xml");
 
+			/* Create Employee Object of WS service */
+			final Employee employee = new Employee(employeeDTO.getEmpId(), employeeDTO.getEmpName(), employeeDTO.getPhone(),
+					employeeDTO.getEmail(), employeeDTO.getSalary(), employeeDTO.getDesignation());
+
 			/* Call update */
-			client.put((Employee) dto);
+			client.put(employee);
 
 		} else {
 			/* Throw runtime error */

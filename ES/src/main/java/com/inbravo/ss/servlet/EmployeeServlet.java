@@ -13,9 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.dto.StandardDTO;
-import com.inbravo.esws.service.Employee;
-import com.inbravo.esws.exception.EmployeeException;
+import com.inbravo.ss.dto.EmployeeDTO;
+import com.inbravo.ss.exception.EmployeeException;
 import com.inbravo.ss.jdbc.EmployeeInfoAtMongoDB;
 import com.inbravo.ss.service.EmployeeInfo;
 import com.inbravo.ss.wsclients.EmployeeInfoAtERWS;
@@ -67,7 +66,7 @@ public final class EmployeeServlet extends HttpServlet {
 			final long startTime = System.currentTimeMillis();
 
 			/* Create new Employee DTO list */
-			final List<StandardDTO> employeeList = this.getEmployees(employeeId);
+			final List<EmployeeDTO> employeeList = this.getEmployees(employeeId);
 
 			/* End time */
 			final long endTime = System.currentTimeMillis();
@@ -119,7 +118,7 @@ public final class EmployeeServlet extends HttpServlet {
 			final long startTime = System.currentTimeMillis();
 
 			/* Add new employee in DB */
-			employeeInfo.update(new Employee(request));
+			employeeInfo.update(new EmployeeDTO(request));
 
 			/* End time */
 			final long endTime = System.currentTimeMillis();
@@ -220,7 +219,7 @@ public final class EmployeeServlet extends HttpServlet {
 
 			try {
 				/* Add new employee in DB */
-				employeeInfo.create(new Employee(request));
+				employeeInfo.create(new EmployeeDTO(request));
 
 				/* Check if created employee information found in session */
 				if (request.getSession().getAttribute("emp_created") != null) {
@@ -265,16 +264,16 @@ public final class EmployeeServlet extends HttpServlet {
 	 * @throws NumberFormatException
 	 * @throws Exception
 	 */
-	private final List<StandardDTO> getEmployees(final String employeeId) throws NumberFormatException, Exception {
+	private final List<EmployeeDTO> getEmployees(final String employeeId) throws NumberFormatException, Exception {
 
 		/* Create new Employee DTO list */
-		final List<StandardDTO> employeeList = new ArrayList<StandardDTO>();
+		final List<EmployeeDTO> employeeList = new ArrayList<EmployeeDTO>();
 
 		/* If there is no employee id in request */
 		if (employeeId != null && "".equals(employeeId)) {
 
 			/* Create new DTO and add in list */
-			employeeList.add((Employee) employeeInfo.read(Integer.parseInt(employeeId)));
+			employeeList.add((EmployeeDTO) employeeInfo.read(Integer.parseInt(employeeId)));
 
 		} else {
 

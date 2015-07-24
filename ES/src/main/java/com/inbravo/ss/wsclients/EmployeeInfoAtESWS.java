@@ -1,5 +1,6 @@
 package com.inbravo.ss.wsclients;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cxf.endpoint.Client;
@@ -7,8 +8,8 @@ import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.dto.StandardDTO;
 import com.inbravo.esws.service.Employee;
+import com.inbravo.ss.dto.EmployeeDTO;
 import com.inbravo.ss.service.EmployeeInfo;
 
 /**
@@ -53,7 +54,7 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	}
 
 	@Override
-	public void create(final StandardDTO employee) throws Exception {
+	public void create(final EmployeeDTO employee) throws Exception {
 
 		if (initializationStatus) {
 
@@ -66,7 +67,7 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	}
 
 	@Override
-	public final Employee read(final int employeeId) throws Exception {
+	public final EmployeeDTO read(final int employeeId) throws Exception {
 
 		if (initializationStatus) {
 
@@ -76,8 +77,8 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 			/* Get all employees from response */
 			final Employee employee = (Employee) res[0];
 
-			/* Create new employee list */
-			return employee;
+			/* Create new employee */
+			return new EmployeeDTO(employee);
 		} else {
 
 			/* Throw runtime error */
@@ -86,23 +87,31 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	}
 
 	@Override
-	public final List<StandardDTO> readAll() throws Exception {
+	public final List<EmployeeDTO> readAll() throws Exception {
 
 		if (initializationStatus) {
+
+			/* List of employee DTO */
+			final List<EmployeeDTO> employeeDTOList = new ArrayList<EmployeeDTO>();
 
 			/* Call read method */
 			final Object[] res = client.invoke("readAll");
 
 			/* Get all employees from response */
 			@SuppressWarnings("unchecked")
-			final List<StandardDTO> employees = (List<StandardDTO>) res[0];
+			final List<Employee> employees = (List<Employee>) res[0];
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("readAll, employees count : " + employees);
 			}
 
-			/* Create new employee list */
-			return employees;
+			for (final Employee employee : employees) {
+
+				employeeDTOList.add(new EmployeeDTO(employee));
+			}
+
+			/* Return employee list */
+			return employeeDTOList;
 
 		} else {
 			/* Throw runtime error */
@@ -124,9 +133,13 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	}
 
 	@Override
-	final public void update(final StandardDTO employee) throws Exception {
+	final public void update(final EmployeeDTO employeeDTO) throws Exception {
 
 		if (initializationStatus) {
+
+			/* Create Employee Object of WS service */
+			final Employee employee = new Employee(employeeDTO.getEmpId(), employeeDTO.getEmpName(), employeeDTO.getPhone(),
+					employeeDTO.getEmail(), employeeDTO.getSalary(), employeeDTO.getDesignation());
 
 			/* Call update method */
 			client.invoke("update", new Object[] { employee });

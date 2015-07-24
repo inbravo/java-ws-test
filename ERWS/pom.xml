@@ -171,12 +171,5 @@
 			<artifactId>cxf-rt-transports-http</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>esws</groupId>
-			<artifactId>inbravo-dto</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/inbravo-dto.jar</systemPath>
-		</dependency>
 	</dependencies>
 </project>
