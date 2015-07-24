@@ -1,7 +1,6 @@
-package com.inbravo.erws.dao;
+package com.inbravo.erws.dto;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
 
 import com.mongodb.DBObject;
 
@@ -11,8 +10,8 @@ import com.mongodb.DBObject;
  * 
  */
 @XmlRootElement
-public final class EmployeeDAO {
-
+public final class Employee
+{
 	private int empId;
 	private String empName;
 	private String phone;
@@ -20,11 +19,13 @@ public final class EmployeeDAO {
 	private float salary;
 	private String designation;
 
-	public EmployeeDAO() {
+	public Employee()
+	{
 
 	}
 
-	public EmployeeDAO(final DBObject object) {
+	public Employee(final DBObject object)
+	{
 
 		this.empId = Integer.parseInt("" + object.get("id"));
 		this.empName = "" + object.get("name");
@@ -34,9 +35,8 @@ public final class EmployeeDAO {
 		this.salary = Float.parseFloat("" + object.get("salary"));
 	}
 
-	public EmployeeDAO(final int empId, final String empName,
-			final String phone, final String email, final float salary,
-			final String designation) {
+	public Employee(final int empId, final String empName, final String phone, final String email, final float salary, final String designation)
+	{
 
 		super();
 		this.empId = empId;
@@ -50,7 +50,8 @@ public final class EmployeeDAO {
 	/**
 	 * @return the empId
 	 */
-	public final int getEmpId() {
+	public final int getEmpId()
+	{
 		return this.empId;
 	}
 
@@ -58,14 +59,16 @@ public final class EmployeeDAO {
 	 * @param empId
 	 *            the empId to set
 	 */
-	public final void setEmpId(final int empId) {
+	public final void setEmpId(final int empId)
+	{
 		this.empId = empId;
 	}
 
 	/**
 	 * @return the empName
 	 */
-	public final String getEmpName() {
+	public final String getEmpName()
+	{
 		return this.empName;
 	}
 
@@ -73,14 +76,16 @@ public final class EmployeeDAO {
 	 * @param empName
 	 *            the empName to set
 	 */
-	public final void setEmpName(final String empName) {
+	public final void setEmpName(final String empName)
+	{
 		this.empName = empName;
 	}
 
 	/**
 	 * @return the phone
 	 */
-	public final String getPhone() {
+	public final String getPhone()
+	{
 		return this.phone;
 	}
 
@@ -88,14 +93,16 @@ public final class EmployeeDAO {
 	 * @param phone
 	 *            the phone to set
 	 */
-	public final void setPhone(final String phone) {
+	public final void setPhone(final String phone)
+	{
 		this.phone = phone;
 	}
 
 	/**
 	 * @return the email
 	 */
-	public final String getEmail() {
+	public final String getEmail()
+	{
 		return this.email;
 	}
 
@@ -103,14 +110,16 @@ public final class EmployeeDAO {
 	 * @param email
 	 *            the email to set
 	 */
-	public final void setEmail(final String email) {
+	public final void setEmail(final String email)
+	{
 		this.email = email;
 	}
 
 	/**
 	 * @return the salary
 	 */
-	public final float getSalary() {
+	public final float getSalary()
+	{
 		return this.salary;
 	}
 
@@ -118,14 +127,16 @@ public final class EmployeeDAO {
 	 * @param salary
 	 *            the salary to set
 	 */
-	public final void setSalary(final float salary) {
+	public final void setSalary(final float salary)
+	{
 		this.salary = salary;
 	}
 
 	/**
 	 * @return the designation
 	 */
-	public final String getDesignation() {
+	public final String getDesignation()
+	{
 		return this.designation;
 	}
 
@@ -133,7 +144,8 @@ public final class EmployeeDAO {
 	 * @param designation
 	 *            the designation to set
 	 */
-	public final void setDesignation(final String designation) {
+	public final void setDesignation(final String designation)
+	{
 		this.designation = designation;
 	}
 
@@ -143,10 +155,9 @@ public final class EmployeeDAO {
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public final String toString() {
-		return "EmployeeDAO [empId=" + this.empId + ", empName=" + this.empName
-				+ ", phone=" + this.phone + ", email=" + this.email
-				+ ", salary=" + this.salary + ", designation="
-				+ this.designation + "]";
+	public final String toString()
+	{
+		return "Employee [empId=" + this.empId + ", empName=" + this.empName + ", phone=" + this.phone + ", email=" + this.email + ", salary=" + this.salary + ", designation=" + this.designation
+				+ "]";
 	}
 }

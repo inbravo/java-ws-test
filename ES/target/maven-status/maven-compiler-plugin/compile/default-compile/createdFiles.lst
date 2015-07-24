@@ -1,7 +1,7 @@
 com\inbravo\ss\jdbc\EmployeeInfoAtDB.class
 com\inbravo\ss\servlet\EmployeeServlet.class
 com\inbravo\ss\service\EmployeeInfo.class
-com\inbravo\ss\execption\EmployeeException.class
 com\inbravo\ss\jdbc\EmployeeInfoAtMongoDB.class
 com\inbravo\ss\dao\EmployeeDAO.class
-com\inbravo\ss\dto\EmployeeDTO.class
+com\inbravo\ss\wsclients\EmployeeInfoAtERWS.class
+com\inbravo\ss\wsclients\EmployeeInfoAtESWS.class

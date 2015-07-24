@@ -88,6 +88,13 @@
 			<artifactId>cxf-rt-transports-http</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>esws</groupId>
+			<artifactId>esws-dto</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/esws-dto.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<!-- Webapp name -->

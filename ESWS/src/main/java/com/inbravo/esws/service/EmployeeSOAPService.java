@@ -3,12 +3,11 @@ package com.inbravo.esws.service;
 import java.util.List;
 
 import javax.jws.WebService;
-import javax.naming.OperationNotSupportedException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.esws.dao.EmployeeDAO;
+import com.inbravo.esws.exception.EmployeeException;
 import com.inbravo.esws.jdbc.EmployeeInfoAtMongoDB;
 
 @WebService(endpointInterface = "com.inbravo.esws.service.EmployeeService", serviceName = "employeeService")
@@ -24,7 +23,23 @@ public final class EmployeeSOAPService implements EmployeeService
 	}
 
 	@Override
-	public final List<EmployeeDAO> read() throws Exception
+	public final Employee read(final int employeeId) throws Exception
+	{
+		try
+		{
+			logger.info(">>>> read");
+
+			/* Get employee from DB */
+			return employeeInfo.read(employeeId);
+		} catch (final Exception e)
+		{
+			logger.error("Error in read operation", e);
+			throw new EmployeeException("Error in read operation", e);
+		}
+	}
+
+	@Override
+	public final List<Employee> readAll() throws Exception
 	{
 		try
 		{
@@ -34,30 +49,56 @@ public final class EmployeeSOAPService implements EmployeeService
 			return employeeInfo.read();
 		} catch (final Exception e)
 		{
-			logger.error("Exception inside employee read operation", e);
+			logger.error("Error in read operation", e);
+			throw new EmployeeException("Error in read operation", e);
 		}
-
-		return null;
 	}
 
 	@Override
-	public final void create(final EmployeeDAO employee) throws Exception
+	public final void create(final Employee employee) throws Exception
 	{
-		/* TODO */
-		throw new OperationNotSupportedException("Employee create is not supported");
+		try
+		{
+			logger.info(">>>> create");
+
+			/* Create employee in DB */
+			employeeInfo.create(employee);
+		} catch (final Exception e)
+		{
+			logger.error("Error in create operation", e);
+			throw new EmployeeException("Error in create operation", e);
+		}
 	}
 
 	@Override
-	public final void update(final EmployeeDAO employee) throws Exception
+	public final void update(final Employee employee) throws Exception
 	{
-		/* TODO */
-		throw new OperationNotSupportedException("Employee update is not supported");
+		try
+		{
+			logger.info(">>>> update");
+
+			/* Update employee in DB */
+			employeeInfo.update(employee);
+		} catch (final Exception e)
+		{
+			logger.error("Error in update operation", e);
+			throw new EmployeeException("Error in update operation", e);
+		}
 	}
 
 	@Override
 	public final void delete(final int employeeId) throws Exception
 	{
-		/* TODO */
-		throw new OperationNotSupportedException("Employee delete is not supported");
+		try
+		{
+			logger.info(">>>> delete");
+
+			/* Delete employees from DB */
+			employeeInfo.delete(employeeId);
+		} catch (final Exception e)
+		{
+			logger.error("Error in delete operation", e);
+			throw new EmployeeException("Error in delete operation", e);
+		}
 	}
 }

@@ -13,9 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.ss.dao.EmployeeDAO;
-import com.inbravo.ss.dto.EmployeeDTO;
-import com.inbravo.ss.execption.EmployeeException;
+import com.inbravo.esws.service.Employee;
+import com.inbravo.esws.exception.EmployeeException;
 import com.inbravo.ss.jdbc.EmployeeInfoAtMongoDB;
 import com.inbravo.ss.service.EmployeeInfo;
 import com.inbravo.ss.wsclients.EmployeeInfoAtERWS;
@@ -63,10 +62,19 @@ public final class EmployeeServlet extends HttpServlet {
 
 		try {
 
-			/* Set employee DTO in session */
-			request.setAttribute("employees", this.getEmployees(employeeId));
+			/* Start time */
+			final long startTime = System.currentTimeMillis();
 
-			logger.debug("--Inside doGet : employees list is set in request");
+			/* Create new Employee DTO list */
+			final List<Employee> employeeList = this.getEmployees(employeeId);
+
+			/* End time */
+			final long endTime = System.currentTimeMillis();
+
+			logger.debug("--Inside doGet : time taken in transaction : " + (endTime - startTime) + " msec(s)");
+
+			/* Set employee DTO in session */
+			request.setAttribute("employees", employeeList);
 
 			/* Forward the request to view JSP */
 			request.getRequestDispatcher("/jsp/employee/ViewEmployee.jsp").forward(request, response);
@@ -84,7 +92,15 @@ public final class EmployeeServlet extends HttpServlet {
 
 		/* Call proces request */
 		try {
+			/* Start time */
+			final long startTime = System.currentTimeMillis();
+
 			this.processRequest(request, response);
+
+			/* End time */
+			final long endTime = System.currentTimeMillis();
+
+			logger.debug("--Inside doPost : time taken in transaction : " + (endTime - startTime) + " msec(s)");
 		} catch (final Exception e) {
 
 			/* Send to error page */
@@ -98,14 +114,16 @@ public final class EmployeeServlet extends HttpServlet {
 		logger.debug("--Inside doPut");
 
 		try {
-			/* Create new Employee type data transfer (DTO) object */
-			final EmployeeDTO dto = new EmployeeDTO(request);
-
-			/* Create new Employee type data access (DAO) object from DTO */
-			final EmployeeDAO dao = new EmployeeDAO(dto);
+			/* Start time */
+			final long startTime = System.currentTimeMillis();
 
 			/* Add new employee in DB */
-			employeeInfo.update(dao);
+			employeeInfo.update(new Employee(request));
+
+			/* End time */
+			final long endTime = System.currentTimeMillis();
+
+			logger.debug("--Inside doPut : time taken in transaction : " + (endTime - startTime) + " msec(s)");
 		} catch (final EmployeeException e) {
 
 			/* Throw user error */
@@ -143,8 +161,16 @@ public final class EmployeeServlet extends HttpServlet {
 		logger.debug("--Inside doDelete : employeeId : " + employeeId);
 
 		try {
+			/* Start time */
+			final long startTime = System.currentTimeMillis();
+
 			/* Delete the employee from DB */
 			employeeInfo.delete(employeeId);
+
+			/* End time */
+			final long endTime = System.currentTimeMillis();
+
+			logger.debug("--Inside doDelete : time taken in transaction : " + (endTime - startTime) + " msec(s)");
 		} catch (final EmployeeException e) {
 
 			/* Throw user error */
@@ -192,15 +218,8 @@ public final class EmployeeServlet extends HttpServlet {
 		} else if (request.getParameter("operation") != null && "create".equalsIgnoreCase(request.getParameter("operation"))) {
 
 			try {
-
-				/* Create new Employee type data transfer (DTO) object */
-				final EmployeeDTO dto = new EmployeeDTO(request);
-
-				/* Create new Employee type data access (DAO) object from DTO */
-				final EmployeeDAO dao = new EmployeeDAO(dto);
-
 				/* Add new employee in DB */
-				employeeInfo.create(dao);
+				employeeInfo.create(new Employee(request));
 
 				/* Check if created employee information found in session */
 				if (request.getSession().getAttribute("emp_created") != null) {
@@ -245,34 +264,26 @@ public final class EmployeeServlet extends HttpServlet {
 	 * @throws NumberFormatException
 	 * @throws Exception
 	 */
-	private final List<EmployeeDTO> getEmployees(final String employeeId) throws NumberFormatException, Exception {
+	private final List<Employee> getEmployees(final String employeeId) throws NumberFormatException, Exception {
 
 		/* Create new Employee DTO list */
-		final List<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
+		final List<Employee> employeeList = new ArrayList<Employee>();
 
 		/* If there is no employee id in request */
 		if (employeeId != null && "".equals(employeeId)) {
 
-			/* Get employee information from DB */
-			final EmployeeDAO dao = employeeInfo.read(Integer.parseInt(employeeId));
-
 			/* Create new DTO and add in list */
-			dtos.add(new EmployeeDTO(dao));
+			employeeList.add(employeeInfo.read(Integer.parseInt(employeeId)));
 
 		} else {
 
-			/* Get employee information from DB */
-			final List<EmployeeDAO> daos = employeeInfo.read();
-
-			/* Iterate over DAO and populate DTO */
-			for (final EmployeeDAO dao : daos) {
-
-				/* Create new DTO and add in list */
-				dtos.add(new EmployeeDTO(dao));
-			}
+			/* Add all employee in list */
+			employeeList.addAll(employeeInfo.readAll());
 		}
 
-		return dtos;
+		logger.debug("--Inside getEmployees : employees list : " + employeeList);
+
+		return employeeList;
 	}
 
 	/**
@@ -344,7 +355,7 @@ public final class EmployeeServlet extends HttpServlet {
 		}
 
 		logger.info("--Inside serviceSwitch, backhand service is changed to : " + serviceType);
-		
+
 		/* Forward the request to service switch JSP */
 		request.getRequestDispatcher("/jsp/service/ServiceSwitch.jsp").forward(request, response);
 	}

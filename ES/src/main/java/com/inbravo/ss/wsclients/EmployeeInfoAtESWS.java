@@ -7,7 +7,7 @@ import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.ss.dao.EmployeeDAO;
+import com.inbravo.esws.service.Employee;
 import com.inbravo.ss.service.EmployeeInfo;
 
 /**
@@ -22,8 +22,10 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	/* Name of service class */
 	public static final String SERVICE_NAME = "EmployeeInfoAtESWS";
 
-	private static final int port = 27017;
+	private static final int port = 8080;
 	private static final String host = "localhost";
+
+	private Client client;
 
 	private static boolean initializationStatus;
 
@@ -39,15 +41,23 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 
 	public final void initESWSClient() throws Exception {
 
+		/* Create client factory */
+		final JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+
+		/* Create WS client */
+		client = dcf.createClient("http://" + host + ":" + port + "/esws/services/employeeService?wsdl");
+
 		/* Initialization is completed */
 		initializationStatus = true;
 	}
 
 	@Override
-	public void create(final EmployeeDAO dao) throws Exception {
+	public void create(final Employee employee) throws Exception {
 
 		if (initializationStatus) {
 
+			/* Call update method */
+			client.invoke("create", new Object[] { employee });
 		} else {
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtESWS is not initialized");
@@ -55,31 +65,48 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	}
 
 	@Override
-	public final EmployeeDAO read(final int employeeId) throws Exception {
+	public final Employee read(final int employeeId) throws Exception {
 
 		if (initializationStatus) {
 
+			/* Call read method */
+			final Object[] res = client.invoke("read", new Object[] { "" + employeeId });
+
+			/* Get all employees from response */
+			final Employee employee = (Employee) res[0];
+
+			/* Create new employee list */
+			return employee;
 		} else {
+
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtESWS is not initialized");
 		}
-		return null;
 	}
 
 	@Override
-	public final List<EmployeeDAO> read() throws Exception {
+	public final List<Employee> readAll() throws Exception {
 
 		if (initializationStatus) {
-			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-			Client client = dcf.createClient("http://localhost:8080/esws/services/employeeService?wsdl");
 
-			Object[] res = client.invoke("read");
-			System.out.println("Echo response: " + res[0]);
+			/* Call read method */
+			final Object[] res = client.invoke("readAll");
+
+			/* Get all employees from response */
+			@SuppressWarnings("unchecked")
+			final List<Employee> employees = (List<Employee>) res[0];
+
+			if (logger.isDebugEnabled()) {
+				logger.debug("readAll, employees count : " + employees);
+			}
+
+			/* Create new employee list */
+			return employees;
+
 		} else {
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtESWS is not initialized");
 		}
-		return null;
 	}
 
 	@Override
@@ -87,6 +114,8 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 
 		if (initializationStatus) {
 
+			/* Call update method */
+			client.invoke("delete", new Object[] { employeeId });
 		} else {
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtESWS is not initialized");
@@ -94,22 +123,15 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	}
 
 	@Override
-	final public void update(final EmployeeDAO dao) throws Exception {
+	final public void update(final Employee employee) throws Exception {
 
 		if (initializationStatus) {
 
+			/* Call update method */
+			client.invoke("update", new Object[] { employee });
 		} else {
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtESWS is not initialized");
 		}
-	}
-
-	public static void main(String[] args) throws Exception {
-
-		final EmployeeInfoAtESWS eamdb = new EmployeeInfoAtESWS();
-
-		System.out.println(eamdb.read());
-		// eamdb.delete(2);
-		// eamdb.read(2);
 	}
 }

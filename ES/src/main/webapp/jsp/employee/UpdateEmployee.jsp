@@ -1,7 +1,4 @@
 <!-- Author amit.dixit@impetus.co.in for Java/Servlet training -->
-<%@page import="com.inbravo.ss.dto.EmployeeDTO"%>
-<%@page import="java.util.List"%>
-<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

@@ -5,7 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.ss.dao.EmployeeDAO;
+import com.inbravo.esws.service.Employee;
 import com.inbravo.ss.service.EmployeeInfo;
 
 /**
@@ -42,7 +42,7 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	}
 
 	@Override
-	public void create(final EmployeeDAO dao) throws Exception {
+	public void create(final Employee dao) throws Exception {
 
 		if (initializationStatus) {
 
@@ -53,7 +53,7 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	}
 
 	@Override
-	public final EmployeeDAO read(final int employeeId) throws Exception {
+	public final Employee read(final int employeeId) throws Exception {
 
 		if (initializationStatus) {
 
@@ -65,7 +65,7 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	}
 
 	@Override
-	public final List<EmployeeDAO> read() throws Exception {
+	public final List<Employee> readAll() throws Exception {
 
 		if (initializationStatus) {
 
@@ -88,7 +88,7 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	}
 
 	@Override
-	final public void update(final EmployeeDAO dao) throws Exception {
+	final public void update(final Employee dao) throws Exception {
 
 		if (initializationStatus) {
 
@@ -96,17 +96,5 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtERWS client is not initialized");
 		}
-	}
-
-	public static void main(String[] args) throws Exception {
-
-		final EmployeeDAO dao = new EmployeeDAO(2, "Amit", "9873139660", "amit.dixit@impetus.co.in", 10000f, "Engineer");
-
-		final EmployeeInfoAtESWS eamdb = new EmployeeInfoAtESWS();
-
-		eamdb.create(dao);
-		System.out.println(eamdb.read(2));
-		// eamdb.delete(2);
-		// eamdb.read(2);
 	}
 }

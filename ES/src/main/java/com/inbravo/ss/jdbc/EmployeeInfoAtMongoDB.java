@@ -1,13 +1,14 @@
 package com.inbravo.ss.jdbc;
 
 import java.net.UnknownHostException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.ss.dao.EmployeeDAO;
+import com.inbravo.esws.service.Employee;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -59,7 +60,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 	}
 
 	@Override
-	public void create(final EmployeeDAO dao) throws Exception {
+	public void create(final Employee dao) throws Exception {
 
 		if (initializationStatus) {
 
@@ -97,7 +98,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 	}
 
 	@Override
-	public final EmployeeDAO read(final int employeeId) throws Exception {
+	public final Employee read(final int employeeId) throws Exception {
 
 		if (initializationStatus) {
 
@@ -127,7 +128,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 					logger.debug("Found single employee : [" + object.toMap() + "]");
 				}
 
-				return new EmployeeDAO(object);
+				return new Employee(object);
 
 			} catch (final Exception ex) {
 
@@ -147,7 +148,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 	}
 
 	@Override
-	public final List<EmployeeDAO> read() throws Exception {
+	public final List<Employee> readAll() throws Exception {
 
 		if (initializationStatus) {
 
@@ -157,7 +158,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 			final DBCollection coll = mongo.getDB("test").getCollection("Employee");
 
 			/* Create new employee list */
-			final List<EmployeeDAO> employeeList = new ArrayList<EmployeeDAO>();
+			final List<Employee> employeeList = new ArrayList<Employee>();
 
 			try {
 
@@ -175,7 +176,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 
 					/* Get record collection */
 					final DBObject object = cursor.next();
-					employeeList.add(new EmployeeDAO(object));
+					employeeList.add(new Employee(object));
 
 					logger.debug("Added employee : [" + object.toMap() + " in list]");
 				}
@@ -238,7 +239,7 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 	}
 
 	@Override
-	final public void update(final EmployeeDAO dao) throws Exception {
+	final public void update(final Employee dao) throws Exception {
 
 		if (initializationStatus) {
 
@@ -274,17 +275,5 @@ public final class EmployeeInfoAtMongoDB implements EmployeeInfoAtDB {
 				mongo.getDB("test").requestDone();
 			}
 		}
-	}
-
-	public static void main(String[] args) throws Exception {
-
-		final EmployeeDAO dao = new EmployeeDAO(2, "Amit", "9873139660", "amit.dixit@impetus.co.in", 10000f, "Engineer");
-
-		final EmployeeInfoAtMongoDB eamdb = new EmployeeInfoAtMongoDB();
-
-		eamdb.create(dao);
-		System.out.println(eamdb.read(2));
-		// eamdb.delete(2);
-		// eamdb.read(2);
 	}
 }

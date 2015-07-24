@@ -1,6 +1,7 @@
 package com.inbravo.ss.dao;
 
-import com.inbravo.ss.dto.EmployeeDTO;
+import com.inbravo.esws.service.Employee;
+
 import com.mongodb.DBObject;
 
 /**
@@ -21,15 +22,15 @@ public final class EmployeeDAO {
 
 	}
 
-	public EmployeeDAO(final EmployeeDTO dto) {
+	public EmployeeDAO(final Employee employee) {
 
 		super();
-		this.empId = dto.getEmpId();
-		this.empName = dto.getEmpName();
-		this.phone = dto.getPhone();
-		this.email = dto.getEmail();
-		this.salary = dto.getSalary();
-		this.designation = dto.getDesignation();
+		this.empId = employee.getEmpId();
+		this.empName = employee.getEmpName();
+		this.phone = employee.getPhone();
+		this.email = employee.getEmail();
+		this.salary = employee.getSalary();
+		this.designation = employee.getDesignation();
 	}
 
 	public EmployeeDAO(final DBObject object) {
@@ -42,8 +43,7 @@ public final class EmployeeDAO {
 		this.salary = Float.parseFloat("" + object.get("salary"));
 	}
 
-	public EmployeeDAO(final int empId, final String empName,
-			final String phone, final String email, final float salary,
+	public EmployeeDAO(final int empId, final String empName, final String phone, final String email, final float salary,
 			final String designation) {
 
 		super();
@@ -152,9 +152,7 @@ public final class EmployeeDAO {
 	 */
 	@Override
 	public final String toString() {
-		return "EmployeeDAO [empId=" + this.empId + ", empName=" + this.empName
-				+ ", phone=" + this.phone + ", email=" + this.email
-				+ ", salary=" + this.salary + ", designation="
-				+ this.designation + "]";
+		return "EmployeeDAO [empId=" + this.empId + ", empName=" + this.empName + ", phone=" + this.phone + ", email=" + this.email
+				+ ", salary=" + this.salary + ", designation=" + this.designation + "]";
 	}
 }

@@ -10,7 +10,7 @@ import javax.ws.rs.Produces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inbravo.erws.dao.EmployeeDAO;
+import com.inbravo.erws.dto.Employee;
 import com.inbravo.erws.jdbc.EmployeeInfoAtMongoDB;
 
 /**
@@ -36,7 +36,7 @@ public final class EmployeeRESTService implements EmployeeService
 	@Path("/")
 	@Produces(
 	{ "application/xml" })
-	public final List<EmployeeDAO> read() throws Exception
+	public final List<Employee> read() throws Exception
 	{
 		try
 		{
@@ -53,14 +53,14 @@ public final class EmployeeRESTService implements EmployeeService
 	}
 
 	@Override
-	public final void create(final EmployeeDAO employee) throws Exception
+	public final void create(final Employee employee) throws Exception
 	{
 		/* TODO */
 		throw new OperationNotSupportedException("Employee create is not supported");
 	}
 
 	@Override
-	public final void update(final EmployeeDAO employee) throws Exception
+	public final void update(final Employee employee) throws Exception
 	{
 		/* TODO */
 		throw new OperationNotSupportedException("Employee update is not supported");

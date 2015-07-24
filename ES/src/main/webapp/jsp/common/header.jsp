@@ -14,7 +14,7 @@
 <body>
 	<center>
 		<div id="mystyle" style="border: none;">
-			<h1>Servlet/JSP/JDBC tutorial</h1>
+			<h1>Servlet/JSP/JDBC/SOAP/REST tutorial</h1>
 			<p>
 				<%=new Date()%></br> </br> <a href="<%=localContext%>/jsp/employee/AddEmployee.jsp">Add New Employee</a> &NegativeThickSpace; | <a
 					href="<%=localContext%>/employeeService.ser"
