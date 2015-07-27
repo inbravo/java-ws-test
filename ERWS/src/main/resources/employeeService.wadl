@@ -1,0 +1,68 @@
+<application xmlns="http://wadl.dev.java.net/2009/02" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<grammars>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified">
+			<xs:element name="Employee" type="employee" />
+			<xs:complexType final="extension restriction" name="employee">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="designation" type="xs:string" />
+					<xs:element minOccurs="0" name="email" type="xs:string" />
+					<xs:element name="empId" type="xs:int" />
+					<xs:element minOccurs="0" name="empName" type="xs:string" />
+					<xs:element minOccurs="0" name="phone" type="xs:string" />
+					<xs:element name="salary" type="xs:float" />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</grammars>
+	<resources base="http://localhost:8080/erws/services/employeeService">
+		<resource path="/">
+			<resource path="create">
+				<method name="POST">
+					<request>
+						<representation mediaType="application/octet-stream" />
+					</request>
+					<response>
+						<representation mediaType="application/xml" />
+						<representation mediaType="application/json" />
+					</response>
+				</method>
+			</resource>
+			<resource path="delete/{id}">
+				<param name="id" style="template" type="xs:int" />
+				<method name="DELETE">
+					<request></request>
+					<response status="204"></response>
+				</method>
+			</resource>
+			<resource path="read/{id}">
+				<param name="id" style="template" type="xs:int" />
+				<method name="GET">
+					<request></request>
+					<response>
+						<representation mediaType="application/xml" />
+						<representation mediaType="application/json" />
+					</response>
+				</method>
+			</resource>
+			<resource path="readall">
+				<method name="GET">
+					<response>
+						<representation mediaType="application/xml" />
+						<representation mediaType="application/json" />
+					</response>
+				</method>
+			</resource>
+			<resource path="update">
+				<method name="PUT">
+					<request>
+						<representation mediaType="application/octet-stream" />
+					</request>
+					<response>
+						<representation mediaType="application/xml" />
+						<representation mediaType="application/json" />
+					</response>
+				</method>
+			</resource>
+		</resource>
+	</resources>
+</application>

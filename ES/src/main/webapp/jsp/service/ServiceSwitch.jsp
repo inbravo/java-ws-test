@@ -14,13 +14,13 @@
 			<h1 align="center">Select Service Type</h1>
 			<table align="center">
 				<tr>
-					<td><input type="radio" name="serviceType" value="EmployeeInfoAtMongoDB" checked /></td><td>JDBC</td>
+					<td><input type="radio" name="serviceType" value="JDBC" checked /></td><td>JDBC</td>
 				</tr>
 				<tr>
-					<td><input type="radio" name="serviceType" value="EmployeeInfoAtESWS" /></td><td>SOAP-WS</td>
+					<td><input type="radio" name="serviceType" value="SOAP" /></td><td>SOAP</td>
 				</tr>
 				<tr>
-					<td><input type="radio" name="serviceType" value="EmployeeInfoAtERWS" /></td><td>REST-WS</td>
+					<td><input type="radio" name="serviceType" value="REST" /></td><td>REST</td>
 				</tr>
 			</table>
 			<button type="submit">Switch</button>

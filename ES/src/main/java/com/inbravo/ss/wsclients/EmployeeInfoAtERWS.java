@@ -28,9 +28,9 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 	private final static Logger logger = LoggerFactory.getLogger(EmployeeInfoAtERWS.class);
 
 	/* Name of service class */
-	public static final String SERVICE_NAME = "EmployeeInfoAtERWS";
+	public static final String SERVICE_NAME = "REST";
 
-	private static final int port = 8080;
+	private static final int port = 8888;
 	private static final String host = "localhost";
 
 	/* Create JAXBContext for the employee object */
@@ -70,15 +70,26 @@ public final class EmployeeInfoAtERWS implements EmployeeInfo {
 		employeesContext = JAXBContext.newInstance(Employees.class);
 		employeesUnmarshaller = employeesContext.createUnmarshaller();
 
+		logger.info("REST Client conected at : " + "http://" + host + ":" + port + "/erws/services/employeeService");
+
 		/* Initialization is completed */
 		initializationStatus = true;
 	}
 
 	@Override
-	public void create(final EmployeeDTO dto) throws Exception {
+	public void create(final EmployeeDTO employeeDTO) throws Exception {
 
 		if (initializationStatus) {
 
+			/* Set response content settings */
+			client.path("/create").type("text/xml");
+
+			/* Create Employee Object of WS service */
+			final Employee employee = new Employee(employeeDTO.getEmpId(), employeeDTO.getEmpName(), employeeDTO.getPhone(),
+					employeeDTO.getEmail(), employeeDTO.getSalary(), employeeDTO.getDesignation());
+
+			/* Call create */
+			client.post(employee);
 		} else {
 			/* Throw runtime error */
 			throw new RuntimeException("EmployeeInfoAtERWS client is not initialized");

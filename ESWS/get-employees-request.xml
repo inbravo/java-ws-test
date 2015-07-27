@@ -1,0 +1,17 @@
+
+POST /esws/services/employeeService HTTP/1.1
+Content-Type: text/xml; charset=UTF-8
+Accept: */*
+SOAPAction: ""
+User-Agent: Apache CXF 3.0.5
+Cache-Control: no-cache
+Pragma: no-cache
+Host: 127.0.0.1:8888
+Connection: keep-alive
+Content-Length: 168
+
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<ns2:readAll xmlns:ns2="http://service.esws.inbravo.com/" />
+	</soap:Body>
+</soap:Envelope>

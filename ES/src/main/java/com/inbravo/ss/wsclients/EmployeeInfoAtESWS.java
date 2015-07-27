@@ -22,9 +22,9 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 	private final static Logger logger = LoggerFactory.getLogger(EmployeeInfoAtESWS.class);
 
 	/* Name of service class */
-	public static final String SERVICE_NAME = "EmployeeInfoAtESWS";
+	public static final String SERVICE_NAME = "SOAP";
 
-	private static final int port = 8080;
+	private static final int port = 8888;
 	private static final String host = "localhost";
 
 	private Client client;
@@ -49,14 +49,20 @@ public final class EmployeeInfoAtESWS implements EmployeeInfo {
 		/* Create WS client */
 		client = dcf.createClient("http://" + host + ":" + port + "/esws/services/employeeService?wsdl");
 
+		logger.info("SOAP Client conected at : " + "http://" + host + ":" + port + "/esws/services/employeeService?wsdl");
+
 		/* Initialization is completed */
 		initializationStatus = true;
 	}
 
 	@Override
-	public void create(final EmployeeDTO employee) throws Exception {
+	public void create(final EmployeeDTO employeeDTO) throws Exception {
 
 		if (initializationStatus) {
+
+			/* Create Employee Object of WS service */
+			final Employee employee = new Employee(employeeDTO.getEmpId(), employeeDTO.getEmpName(), employeeDTO.getPhone(),
+					employeeDTO.getEmail(), employeeDTO.getSalary(), employeeDTO.getDesignation());
 
 			/* Call update method */
 			client.invoke("create", new Object[] { employee });
