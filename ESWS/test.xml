@@ -1,0 +1,86 @@
+
+POST /esws/services/employeeService HTTP/1.1
+Content-Type: text/xml; charset=UTF-8
+Accept: */*
+SOAPAction: ""
+User-Agent: Apache CXF 3.0.5
+Cache-Control: no-cache
+Pragma: no-cache
+Host: 127.0.0.1:8888
+Connection: keep-alive
+Content-Length: 168
+
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<ns2:readAll xmlns:ns2="http://service.esws.inbravo.com/" />
+	</soap:Body>
+</soap:Envelope>
+
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Content-Type: text/xml;charset=UTF-8
+Content-Length: 1382
+Date: Tue, 28 Jul 2015 10:24:50 GMT
+
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<ns2:readAllResponse xmlns:ns2="http://service.esws.inbravo.com/">
+			<return>
+				<designation>SSSE</designation>
+				<email>amtdxt@yahoo.com</email>
+				<empId>1</empId>
+				<empName>FIRST</empName>
+				<phone>98731390000</phone>
+				<salary>10.0</salary>
+			</return>
+			<return>
+				<designation>SSE</designation>
+				<email>amtdxttwo@yahoo.com</email>
+				<empId>2</empId>
+				<empName>THREE</empName>
+				<phone>98731390002</phone>
+				<salary>20.0</salary>
+			</return>
+			<return>
+				<designation>SSE</designation>
+				<email>amtdxtone@yahoo.com</email>
+				<empId>2</empId>
+				<empName>SECOND</empName>
+				<phone>98731390001</phone>
+				<salary>10.0</salary>
+			</return>
+			<return>
+				<designation>SE</designation>
+				<email>amtdxtfive@yahoo.com</email>
+				<empId>5</empId>
+				<empName>FIVE</empName>
+				<phone>98731390005</phone>
+				<salary>50.0</salary>
+			</return>
+			<return>
+				<designation>SSE</designation>
+				<email>amtdxtosix@yahoo.com</email>
+				<empId>6</empId>
+				<empName>SIX</empName>
+				<phone>98731390006</phone>
+				<salary>60.0</salary>
+			</return>
+			<return>
+				<designation>MLSE</designation>
+				<email>amtdxtseven@yahoo.com</email>
+				<empId>7</empId>
+				<empName>SEVEN</empName>
+				<phone>98731390007</phone>
+				<salary>7000.0</salary>
+			</return>
+			<return>
+				<designation>LSE</designation>
+				<email>amtdxtonetest@yahoo.com</email>
+				<empId>1</empId>
+				<empName>ONE-TEST</empName>
+				<phone>98731390011</phone>
+				<salary>20.0</salary>
+			</return>
+		</ns2:readAllResponse>
+	</soap:Body>
+</soap:Envelope>
