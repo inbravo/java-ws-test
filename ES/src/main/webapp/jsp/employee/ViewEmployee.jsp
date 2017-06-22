@@ -1,5 +1,5 @@
 <!-- Author amit.dixit@impetus.co.in for Java/Servlet training -->
-<%@page import="com.inbravo.ss.dto.EmployeeDTO"%>
+<%@page import="com.inbravo.ss.dto.CSDTO"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -26,10 +26,10 @@
 			<tbody>
 				<%
 					/* Get all employees */
-					final List<EmployeeDTO> employees = (List<EmployeeDTO>) request.getAttribute("employees");
+							final List<CSDTO> employees = (List<CSDTO>) request.getAttribute("employees");
 
-					/* Iterate over all employees */
-					for (final EmployeeDTO dto : employees) {
+							/* Iterate over all employees */
+							for (final CSDTO dto : employees) {
 				%>
 				<tr>
 					<td><%=String.valueOf(dto.getEmpId())%></td>
